@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>云盘</title>
+</head>
+<body>
+<h1>云盘</h1>
+
+<h2>上传文件</h2>
+<form method="POST" enctype="multipart/form-data" th:action="@{'/upload?path=' + ${currentPath}}">
+    <input type="file" name="file"/>
+    <button type="submit">Upload</button>
+</form>
+
+<h2>文件</h2>
+<form method="POST" th:action="@{'/batchDownload?path=' + ${currentPath}}">
+    <ul>
+        <li th:each="file : ${files}">
+            <input type="checkbox" name="selectedFiles" th:value="${file}">
+            <a th:text="${file}" th:href="@{'/files?path=' + ${currentPath} + '&filename=' + ${file}}"></a>
+            <a th:text="删除" th:href="@{'/delete?path=' + ${currentPath} + '&filename=' + ${file}}"></a>
+        </li>
+    </ul>
+    <button type="submit">批量下载</button>
+</form>
+
+<li><a th:href="@{'/'}">回到根目录</a></li>
+<li th:each="folder : ${folders}">
+    <a th:text="${folder}" th:href="@{'/path?path=' + ${currentPath} + '/' + ${folder}}"></a>
+</li>
+
+<div th:if="${message}">
+    <p th:text="${message}"></p>
+</div>
+</body>
+</html>
